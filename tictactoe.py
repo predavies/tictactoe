@@ -1,12 +1,14 @@
 import os
-
-def init_board():
-    board = [['.', '.', '.'],['.', '.', '.'],['.', '.', '.']]
-    return board
+import time
 
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def init_board():
+    board = [['.', '.', '.'],['.', '.', '.'],['.', '.', '.']]
+    return board
 
 
 def print_board(board):
@@ -18,40 +20,37 @@ def print_board(board):
     print(f"C {board[2][0]} | {board[2][1]} | {board[2][2]}")
     print()
 
-def is_valid(board, player_c, letters, numbers):
-    if len(player_c) == 2:
-        if player_c[0] in letters and player_c[1] in numbers:
-            return True
-    elif player_c == 'QUIT':
-        clear()
-        print('Csőváz')
-        exit()
-    else:
-        return False
 
-
-def player_choice(board):
-    choice = input('Please place mark: ')
-    player_c = choice.upper()
+def choice():
+    current_player = 1
     letters = ['A', 'B', 'C']
     numbers = ['1', '2', '3']
-
-    while is_valid(board, player_c, letters, numbers) != True:
-        player_choice(board)
-
-    row = letters.index(player_c[0])
-    col = numbers.index(player_c[1])
-    board[row][col] = 'X'
-    clear()
-    print_board(board)
-
-    return player_c
-
-def main():  
-    i = '1' 
-    board = init_board()
-    print_board(board)
+    i = '1'
     while i == '1':
-        player_choice(board)
-if __name__ == '__main__':
-    main()
+        choice = input('Please place mark: ')
+        player_c = choice.upper()
+        row = letters.index(player_c[0])
+        col = numbers.index(player_c[1])
+        current_player += 1
+        if current_player % 2 == 0:
+            if board[row][col] == '.':
+                board[row][col] = 'X'
+            else:
+                print('Not valid try again: ')
+                current_player -= 1
+        else:
+            if board[row][col] == '.':
+                board[row][col] = '0'
+            else:
+                print('Not valid try again: ')
+                current_player -= 1
+            
+        
+        print_board(board)
+
+
+board = init_board()
+print_board(board)
+choice()
+
+#has_won
