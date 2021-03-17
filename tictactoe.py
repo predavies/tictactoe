@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 
 def clear():
@@ -74,8 +75,16 @@ def full_board(board):
 
     return False
 
-def get_position():
-    pass
+
+
+def is_input_invalid(board, move, letters, numbers): # itt meg vizsgálja hogy  az input 2 nél nagyobb vagy benne van a listába ha nem vissza dob
+    if len(move) == 2:
+        if move[0] in letters and move[1] in numbers:
+            return True
+        elif move == 'QUIT':
+            quit()
+    return False    
+
 
 def choice(board):
     current_player = 1
@@ -83,48 +92,46 @@ def choice(board):
     numbers = ['1', '2', '3']
     i = '1'
     while i == '1':
-        choice = input('Please place mark: ') #get position
-        player_c = choice.upper()
-        if len(player_c) == 2:
-            row = letters.index(player_c[0])
-            col = numbers.index(player_c[1])
-            current_player += 1
-            if current_player % 2 == 0:
-                if board[row][col] == '.':
-                    board[row][col] = 'X'
-                else:
-                    print('Not valid try again: ')
-                    current_player -= 1
-            else:
-                if board[row][col] == '.':
-                    board[row][col] = '0'
-                else:
-                    print('Not valid try again: ')
-                    current_player -= 1
-            if check_winner_x(board) == True:
-                clear()
-                print_board(board)
-                print("\nX has won!")
+        move = input(f'Please place mark: {letters} {numbers} ').upper()  # átalakítottam ki raktam a vizsgálatát 
+        while not is_input_invalid(board, move, letters, numbers):
+            if move == 'QUIT':
                 quit()
-            if check_winner_0(board) == True:
-                clear()
-                print_board(board)
-                print("\nO has won!")
-                quit()
+            move = input(f'Please place mark: {letters} {numbers} ').upper()
             
-            if full_board(board) == True:
-                clear()
-                print_board(board)
-                print('Game Over! It\'s a tie!')
-                exit()
-            clear()   
-            print_board(board)
-        elif player_c == 'QUIT':
-            main_menu()
+        row = letters.index(move[0])
+        col = numbers.index(move[1])
+        current_player += 1
+        if current_player % 2 == 0:
+            if board[row][col] == '.':
+                board[row][col] = 'X'
+            else:
+                print('Not valid try again: ')
+                current_player -= 1
         else:
-            print('Invalid, Pls try again')
+            if board[row][col] == '.':
+                board[row][col] = '0'
+            else:
+                print('Not valid try again: ')
+                current_player -= 1
+        if check_winner_x(board) == True:
+            clear()
             print_board(board)
-
+            print("\nX has won!")
+            quit()
+        if check_winner_0(board) == True:
+            clear()
+            print_board(board)
+            print("\nO has won!")
+            quit()
+            
+        if full_board(board) == True:
+            clear()
+            print_board(board)
+            print('Game Over! It\'s a tie!')
+            exit()
+        clear()   
+        print_board(board)
+        
 
 def play():
     board = init_board()
@@ -141,13 +148,19 @@ def main_menu():
     for i in range(4):
         time.sleep(1)
         print('...')
-
     print('\nMAIN MENU \n')
     print('(1) Human vs Human')
-    mode = input('please choose game mode: ')
+    print('(2) Human vs AI')
+    mode = input("Chose a level\n")                     #itt bele raktam hogy csak a megfelelő inputot kezelje
+    while mode not in ["1", "2"]:
+        print(f"{mode} is not eligible!")
+        mode = input("Chose a level\n")  
     if mode == '1':
         clear()
         play()
+    if mode == '2':
+        clear()
+
 
 
 if __name__ == '__main__':
