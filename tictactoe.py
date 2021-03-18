@@ -86,6 +86,41 @@ def is_input_invalid(board, move, letters, numbers): # itt meg vizsgálja hogy  
     return False    
 
 
+def player_input(board):
+    letters = ['A', 'B', 'C']
+    numbers = ['1', '2', '3']
+
+    move = input(f'Please place mark: {letters} {numbers} ').upper()
+
+    row = letters.index(move[0])
+    col = numbers.index(move[1])
+    board[row][col] = 'X'
+    print_board(board)
+    time.sleep(1)
+    ai_move(board, move)
+    return move
+
+
+def ai_move(board, move):
+    letters = ['A', 'B', 'C']
+    numbers = ['1', '2', '3']
+
+    ai_choice_row = random.choice(letters)
+    ai_choice_col = random.choice(numbers)
+            
+
+    ai_choice = ai_choice_row + ai_choice_col
+
+    row = letters.index(ai_choice[0])
+        
+    col = numbers.index(ai_choice[1])
+            
+    if ai_choice != move and board[row][col] == '.':
+        board[row][col] = '0'
+    else:
+        ai_move(board, move)
+
+
 def choice(board):
     current_player = 1
     letters = ['A', 'B', 'C']
@@ -138,6 +173,17 @@ def play():
     print_board(board)
     choice(board)
 
+def play2():
+    board = init_board()
+    print_board(board)
+    p = 't'
+    while p == 't':
+        move = player_input(board)
+        clear()
+        print_board(board)
+
+  
+
 
 def greetings():
     print('Welcome to TICTACTOE Game \n Made by: Bence & Davies')
@@ -160,6 +206,8 @@ def main_menu():
         play()
     if mode == '2':
         clear()
+        play2()
+    
 
 
 
