@@ -97,7 +97,9 @@ def player_input(board):
     board[row][col] = 'X'
     print_board(board)
     time.sleep(1)
-    ai_move(board, move)
+    if full_board(board) == False:
+        ai_move(board, move) #kövi
+
     return move
 
 
@@ -115,9 +117,10 @@ def ai_move(board, move):
         
     col = numbers.index(ai_choice[1])
             
-    if ai_choice != move and board[row][col] == '.':
+    if ai_choice != move and board[row][col] == '.': # ciklus, lista
         board[row][col] = '0'
-    else:
+
+    else: 
         ai_move(board, move)
 
 
@@ -173,14 +176,40 @@ def play():
     print_board(board)
     choice(board)
 
+
 def play2():
     board = init_board()
     print_board(board)
     p = 't'
     while p == 't':
         move = player_input(board)
+        check_winner_0(board)
+        check_winner_x(board)
+        full_board(board)
         clear()
         print_board(board)
+
+        if check_winner_x(board) == True:
+            clear()
+            print_board(board)
+            print("\nX has won!")
+            quit()
+        if check_winner_0(board) == True:
+            clear()
+            print_board(board)
+            print("\nO has won!")
+            quit()
+                
+        if full_board(board) == True:
+            clear()
+            print_board(board)
+
+            print('Game Over! It\'s a tie!')
+            exit()
+    
+    
+
+
 
   
 
