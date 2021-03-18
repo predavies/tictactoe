@@ -90,7 +90,11 @@ def player_input(board):
     letters = ['A', 'B', 'C']
     numbers = ['1', '2', '3']
 
-    move = input(f'Please place mark: {letters} {numbers} ').upper()
+    move = input(f'Please place mark: {letters} {numbers} ').upper()  # átalakítottam ki raktam a vizsgálatát 
+    while not is_input_invalid(board, move, letters, numbers):
+        if move == 'QUIT':
+            quit()
+        move = input(f'Please place mark: {letters} {numbers} ').upper()
 
     row = letters.index(move[0])
     col = numbers.index(move[1])
@@ -98,7 +102,7 @@ def player_input(board):
     print_board(board)
     time.sleep(1)
     if full_board(board) == False:
-        ai_move(board, move) #kövi
+        ai_move(board, move) 
 
     return move
 
@@ -207,11 +211,6 @@ def play2():
             print('Game Over! It\'s a tie!')
             exit()
     
-    
-
-
-
-  
 
 
 def greetings():
@@ -226,7 +225,7 @@ def main_menu():
     print('\nMAIN MENU \n')
     print('(1) Human vs Human')
     print('(2) Human vs AI')
-    mode = input("Chose a level\n")                     #itt bele raktam hogy csak a megfelelő inputot kezelje
+    mode = input("Chose a level\n")                   
     while mode not in ["1", "2"]:
         print(f"{mode} is not eligible!")
         mode = input("Chose a level\n")  
@@ -244,4 +243,3 @@ if __name__ == '__main__':
     main_menu()
 
 
-#has_won
